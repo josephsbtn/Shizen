@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
-import { Map, Source, Layer } from "mapbox-gl";
+import { Map, Source, Layer } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
 

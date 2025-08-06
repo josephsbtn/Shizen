@@ -1,15 +1,21 @@
 import { Routes, Route } from "react-router-dom";
-
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Map from "../pages/Map";
+import Challange from "../pages/Challange";
 import Leaderboard from "../pages/Leaderboard";
 
 const AppRoutes = () => {
     return (
         <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/map" element={<Map />} />
+            <Route path="/challenge" element={<Challange />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+
         </Routes>
     )
 }

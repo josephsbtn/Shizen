@@ -1,30 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
-import Searchbar from "../components/Searchbar";
+import SearchBar from "../components/SearchBar";
 
 const Home = () => {
+  //store search input Searchbar
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (searchValue) => {
+    setSearchQuery(searchValue);
+    console.log("Searching based on query: ", searchValue);
+  }
+
+
+
   return (
-    <div
-      className="w-full h-screen bg-blue-500 bg-cover bg-center"
-      style={{ backgroundImage: "url('BgHome.png')" }}
+    <motion.div
+      className="w-full min-h-screen bg-center bg-cover"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1, ease: "easeInOut" }}
+      id="home"
+      style={{ backgroundImage: "url('/BgHome.png')" }}
     >
-      <div className="py-2">
+      <motion.div
+        className="w-full py-10"
+        initial={{ y: -50 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
         <Navbar />
-      </div>
-
-      <div className="w-full flex flex-col justify-center items-center pt-40">
-        <h1 className="text-white text-8xl font-bold font-montserrat text-center w-[72%]">
+      </motion.div>
+      <div className="flex items-center justify-center mt-20 flex-col space-y-4">
+        <motion.h1
+          className="text-8xl font-bold text-center text-white font-montserrat"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
           Seberapa Sehat Udara di Kotamu Hari Ini?
-        </h1>
-        <p className="text-white text-center text-2xl font-light font-raleway leading-normal w-[35%]">
-          Cek nilai hidupmu berdasarkan kualitas udara lokal
-        </p>
+        </motion.h1>
+
+        <motion.p
+          className="w-[38%] text-2xl font-raleway text-center text-white font-raleway"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
+          Cek kualitas udara lokal di kota Anda dengan{" "}
+          <span className="font-bold font-raleway">Shizen</span>
+        </motion.p>
       </div>
 
-      <div className="w-[40%] mx-auto rounded-3xl border-2 border-white p-2 ">
-        <Searchbar />
+      <div className="w-full flex justify-center mt-10">
+        <SearchBar onSearch={handleSearch} />
       </div>
-    </div>
+
+
+      {/* test output  */}
+      {searchQuery && (
+        <motion.div
+          className="w-full flex justify-center mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-6 mx-4">
+            <p className="text-white font-raleway text-lg">
+              Mencari data kualitas udara untuk: <span className="font-bold">{searchQuery}</span>
+            </p>
+          </div>
+        </motion.div>
+      )}
+    </motion.div>
   );
 };
 

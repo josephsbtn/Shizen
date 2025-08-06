@@ -1,10 +1,11 @@
-import React from "react";
-import AppRoutes from "./routes/AppRoutes.jsx";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
+import AnimatedCursor from './components/AnimatedCursor';
 
 function App() {
   return (
     <>
+      <AnimatedCursor />
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>

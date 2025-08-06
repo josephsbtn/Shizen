@@ -1,99 +1,53 @@
 import React from "react";
-import { useEffect } from "react";
-
+import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
-import crown from "../assets/crown.svg";
-import Juarabawah from "../components/leaderboard410";
-import tes from "../assets/tolol.png";
+
+import chart from "../assets/Leaderbord.svg";
+import Top10 from "../components/Top10leaderboard";
+import Top3 from "../components/Top3leaderboard";
 
 const Leaderboard = () => {
-
   return (
-    <div className="w-full flex flex-col bg-[#204E51] bg-cover bg-center">
-      <div className="py-2">
+    <motion.div
+      className="w-full min-h-screen flex flex-col bg-center bg-[#204E51]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1, ease: "easeInOut" }}
+      id="home"
+    >
+      <motion.div
+        className="w-full py-10"
+        initial={{ y: -50 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
         <Navbar />
-      </div>
-      <h1 className="text-white text-5xl text-center font-bold font-montserrat leading-normal pt-12">
-        Leaderboard
-      </h1>
-
-      {/* LEADERBOARDNYA */}
-      <div className="bg-white rounded-t-3xl w-[90%] mx-auto">
-        {/* Juara 1 - 2 - 3 */}
-        <div className="flex justify-center items-center p-10 gap-2">
-          {/* juara 2 */}
-          <div className="flex-col justify-center items-center">
-            <div className="w-44 h-44 rounded-full translate-y-16 bg-black border-8 border-[#204E51]"></div>
-            <div className="w-10 h-10 mx-auto translate-y-10 rounded-full bg-[#204E51]">
-              <h2 className="font-bold text-white text-center text-3xl font-raleway">
-                2
-              </h2>
-            </div>
-
-            <div className="mx-auto translate-y-11 rounded-full">
-                <h2 className="font-bold text-black text-center text-2xl font-raleway">
-                  Nolan
-                </h2>
-                <p className="text-center font-raleway font-light text-xl">100 Point</p>
-              </div>
-          </div>
-
-          {/* Juara 1 */}
-          <div className="flex-col justify-center items-center mx-20 -translate-y-16">
-            <img
-              src={crown}
-              className="w-20 h-20 mx-auto translate-y-8 translate-x-5 rotate-12"
-              alt=""
-            />
-            <div className="w-44 h-44 rounded-full bg-red-500 border-8 border-[#204E51]">
-              <img
-                className="w-full h-full rounded-full object-cover"
-                src={tes}
-                alt=""
-              />
-              <div className="w-10 h-10 mx-auto -translate-y-[20px] rounded-full bg-[#204E51]">
-                <h2 className="font-bold text-white text-center text-3xl font-raleway">
-                  1
-                </h2>
-              </div>
-
-              <div className="mx-auto -translate-y-[20px] rounded-full">
-                <h2 className="font-bold text-black text-center text-2xl font-raleway">
-                  Nolan
-                </h2>
-                <p className="text-center font-raleway font-light text-xl">100 Point</p>
-              </div>
-            </div>
-          </div>
-
-          {/* juara 2 */}
-          <div className="flex-col justify-center items-center">
-            <div className="w-44 h-44 rounded-full translate-y-16 bg-black border-8 border-[#204E51]"></div>
-            <div className="w-10 h-10 mx-auto translate-y-10 rounded-full bg-[#204E51]">
-              <h2 className="font-bold text-white text-center text-3xl font-raleway">
-                3
-              </h2>
-            </div>
-
-            <div className="mx-auto translate-y-11 rounded-full">
-                <h2 className="font-bold text-black text-center text-2xl font-raleway">
-                  Nolan
-                </h2>
-                <p className="text-center font-raleway font-light text-xl">100 Point</p>
-              </div>
-          </div>
-        </div>
-
-        {/* Juara 4-5-6-7-8-9-10 */}
-        <div className="flex flex-col gap-8 justify-center rounded-2xl bg-[#204E51] w-[90%] mx-auto items-center p-10 my-10">
-          <Juarabawah />
-          <Juarabawah />
-          <Juarabawah />
-          <Juarabawah />
-          <Juarabawah />
+      </motion.div>
+      <div className="bg-[#204E51] rounded-b-3xl">
+        <div className="flex justify-start items-center px-20 gap-4">
+          <h1 className="text-4xl font-bold text-white">Leaderboard</h1>
+          <img src={chart} alt="" />
         </div>
       </div>
-    </div>
+      <div className="flex-grow" />
+
+      {/* Top3 */}
+      <div>
+        <div className="flex justify-center items-center mt-10">
+          <div className="w-[90%] bg-white rounded-3xl shadow-lg p-10">
+            <Top3 />
+          </div>
+        </div>
+      </div>
+
+      {/* Top 10 */}
+      <div className="flex bg-white rounded-t-3xl justify-center items-end gap-4 mb-10">
+        <div className="w-[80%] bg-white rounded-3xl shadow-lg p-10">
+          <Top10 />
+        </div>
+      </div>
+    </motion.div>
   );
 };
+
 export default Leaderboard;

@@ -1,5 +1,12 @@
+/* Import local fonts first */
+@import './assets/fonts/fonts.css';
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import './assets/fonts/fonts.css';
+* {
+    cursor: none
+    ;
+}

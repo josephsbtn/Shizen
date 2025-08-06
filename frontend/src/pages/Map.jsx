@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
-// import MiniSearchBar from "../components/MiniSearchBar";
+import MiniSearchBar from "../components/MiniSearchBar";
 import MapBox from "../components/MapBox";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
@@ -33,9 +33,9 @@ const Map = () => {
           <img src={wind} alt="Wind Icon" className="w-8 h-8" />
         </div>
 
-        {/* <div className="max-w-md">
+        <div className="max-w-md">
           <MiniSearchBar />
-        </div> */}
+        </div>
       </div>
 
       {/* Map Info */}
