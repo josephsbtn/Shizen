@@ -12,12 +12,15 @@ router.get("/request/:city", async (req, res) => {
   }
 });
 
-// router.post("/disease/:city", async (req, res) => {
-//   try {
-//     const { cough, fever, fatigue } = req.body;
-
-//     const result =
-//   } catch (error) {}
-// });
+router.post("/disease/:city", async (req, res) => {
+  try {
+    const city = req.params.city;
+    const { cough, fever, fatigue } = req.body;
+    const result = await getDiease(city, cough, fatigue, fever);
+    return res.status(200).send(result);
+  } catch (error) {
+    return res.status(400).json({ message: error.message || error });
+  }
+});
 
 module.exports = router;

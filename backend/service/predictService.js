@@ -81,7 +81,8 @@ const getRecomendPlants = async (inputData) => {
         },
       })
     ).data;
-    return { plant: result.plant };
+    console.log(result);
+    return;
   } catch (error) {
     console.log("Failed to get Input Data", error.message);
     return Error("Failed to get Health Label", error.message);
