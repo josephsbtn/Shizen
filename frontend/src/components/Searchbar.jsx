@@ -38,8 +38,7 @@ const SearchBar = ({ onSearch }) => {
             placeholder="Cari kota..."
             value={searchValue}
             onChange={handleInputChange}
-            className="w-full text-2xl font-bold p-4 rounded-xl text-slate-800 text-center"
-          ></input>
+            className="w-full text-2xl font-bold p-4 rounded-xl text-slate-800 text-center"></input>
         </form>
       </div>
     </div>
