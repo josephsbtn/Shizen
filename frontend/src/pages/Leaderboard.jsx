@@ -66,7 +66,7 @@ const Leaderboard = () => {
       >
         <Navbar />
       </motion.div>
-      <div className="bg-[#204E51] rounded-b-3xl">
+      <div className="bg-[#204E51] rounded-b-3xl pb-5">
         <div className="flex justify-start items-center px-20 gap-4">
           <h1 className="text-4xl font-bold text-white">Leaderboard</h1>
           <img src={chart} alt="" />
@@ -157,14 +157,14 @@ const Leaderboard = () => {
         </div>
 
         {/* Top 10 */}
-        <div className="flex w-[90%] mx-auto items-center flex-col rounded-[100px] bg-white justify-center py-10 mt-10">
+        <div className="flex w-[90%] mx-auto items-center flex-col rounded-[100px] bg-white/50 justify-center py-10 mt-10">
           {juara10.map((juara10, i) => (
             <div
               key={i}
               className="w-[80%] h-28 bg-white my-4 rounded-3xl shadow-lg flex justify-between items-center px-6"
             >
               <div className="flex gap-4 items-center">
-                <span className="text-xl font-bold text-[#204E51]">
+                <span className="text-4xl font-bold text-[#204E51]">
                   {juara10.rank}.
                 </span>
                 <img
@@ -173,10 +173,10 @@ const Leaderboard = () => {
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div>
-                  <p className="text-lg font-semibold text-[#204E51]">
+                  <p className="text-2xl font-semibold text-[#204E51]">
                     {juara10.username}
                   </p>
-                  <p className="text-md text-gray-600">{juara10.point} points</p>
+                  <p className="text-xl text-gray-600">{juara10.point} points</p>
                 </div>
               </div>
             </div>

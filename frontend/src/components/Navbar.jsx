@@ -42,7 +42,6 @@ const Navbar = () => {
     setUser(null);
     setIsDropdownOpen(false);
     navigate("/");
-    alert("Logged out successfully!");
   };
 
   // Get profile image with fallback
