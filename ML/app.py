@@ -87,7 +87,7 @@ def convert_NO2(NO2):
     else : 
         return 3
 
-@app.route("/predict/plant", methods = ["POST"])
+@app.route("/predict/plants", methods = ["POST"])
 def predict_plant():
     try:
         data = request.get_json()
