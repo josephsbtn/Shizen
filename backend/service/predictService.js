@@ -141,15 +141,13 @@ const getDiease = async (name, cough, fatigue, fever) => {
       Wind_Speed: weather.WindSpeed,
     };
 
-    const result = await axios.post(
-      `http://127.0.0.1:5000/predict/disease`,
-      inputData,
-      {
+    const result = (
+      await axios.post(`http://127.0.0.1:5000/predict/disease`, inputData, {
         headers: {
           "Content-Type": "application/json",
         },
-      }
-    );
+      })
+    ).data;
     console.log(result);
     return result.disease;
   } catch (error) {
