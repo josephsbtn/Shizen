@@ -10,6 +10,7 @@ import { useSearchParams } from "react-router-dom";
 import wind from "../assets/wind-fill.svg";
 import run from "../assets/mdi_run.svg";
 import health from "../assets/map_health.svg";
+import plant from "../assets/wit.svg";
 
 const Map = () => {
   const [searchParams] = useSearchParams();
@@ -21,10 +22,17 @@ const Map = () => {
   const [label, setLabel] = useState();
   const [activity, setActivity] = useState();
   const [dampak, setDampak] = useState();
-  const [plantRecomendation, setPlantRecomendatin] = useState();
+  const [plantRecomendation, setPlantRecomendation] = useState();
 
   const getRawData = async (city) => {
     try {
+      setData("");
+      setAqi("");
+      setLabel("");
+      setDeskripsi("");
+      setActivity("");
+      setDampak("");
+      setPlantRecomendation("");
       const response = (
         await axios.get(`http://localhost:8000/predict/request/${city}`)
       ).data;
@@ -44,6 +52,7 @@ const Map = () => {
         setDeskripsi(result.airPollution.deskripsi);
         setActivity(result.airPollution.activity);
         setDampak(result.airPollution.dampak);
+        setPlantRecomendation(result.plant);
       })
       .catch((err) => {
         console.log("Something wrong");
@@ -84,7 +93,15 @@ const Map = () => {
 
           {/* AQI */}
           <div
-            className={`w-full h-12 flex-auto rounded-2xl p-2 mx-auto text-center mt-4 bg-[#e69d3e]`}>
+            className={`w-full h-12 flex-auto rounded-2xl p-2 mx-auto text-center mt-4 ${
+              aqi < 75
+                ? "bg-[#50CE55]"
+                : aqi < 150
+                ? "bg-[#e69d3e]"
+                : aqi < 300
+                ? "bg-[#8d0000]"
+                : "bg-[#540054]"
+            }`}>
             <span className="text-white text-2xl font-normal font-montserrat leading-normal">
               AQI:
             </span>
@@ -129,14 +146,8 @@ const Map = () => {
             <span className="text-sm font-medium font-montserrat leading-normal">
               Rekomendasi Tanaman
             </span>
-            <img src={health} alt="" />
+            <img src={plant} alt="" />
           </div>
-          <p className="text-xs text-start font-medium font-montserrat leading-normal pt-2">
-            Umum: <span>Manut daerah</span>
-          </p>
-          <p className="text-xs text-start font-medium font-montserrat leading-normal pt-2">
-            Rentan: <span>Manut daerah</span>
-          </p>
         </div>
 
         {/* Map Section */}

@@ -70,6 +70,7 @@ const login = async (username, password) => {
 
 const register = async (username, email, password) => {
   try {
+    console.log(username, email, password);
     const [emailUse, usernameUse] = await Promise.all([
       User.findOne({ email: email }),
       User.findOne({ username: username }),
