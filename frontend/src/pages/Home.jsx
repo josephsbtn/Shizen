@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
-import Searchbar from "../components/Searchbar";
+import SearchBar from "../components/SearchBar";
 
 const Home = () => {
   //store search input Searchbar
@@ -47,7 +47,7 @@ const Home = () => {
       </div>
 
       <div className="w-full flex justify-center mt-10">
-        <Searchbar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} />
       </div>
 
       {/* test output  */}
