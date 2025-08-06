@@ -20,7 +20,7 @@ const MapBox = () => {
   const [viewState, setViewState] = useState({
     longitude: 110.49273,
     latitude: -7.33194,
-    zoom: 15,
+    zoom: 10,
   });
   const [geojson, setGeojson] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +94,7 @@ const MapBox = () => {
     maxzoom: 15,
     paint: {
       "heatmap-weight": ["get", "intensity"],
-      "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 100, 1, 15, 6],
+      "heatmap-intensity": ["interpolate", ["linear"], ["zoom"],0, 2, 15, 5],
       "heatmap-color": [
         "interpolate",
         ["linear"],
@@ -112,7 +112,7 @@ const MapBox = () => {
         1,
         "rgba(139,0,0,1)",
       ],
-      "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 0, 60, 15, 175],
+      "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 0, 2, 15, 60],
       "heatmap-opacity": 0.9,
     },
   };
