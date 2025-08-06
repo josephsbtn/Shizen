@@ -17,8 +17,7 @@ const getAllChalangesByiD = async (idUser) => {
 const getAllChalangesAll = async () => {
   try {
     const data = await Challanges.find();
-    const progress = await getProgessChallanges(idUser);
-    const filter = data.filter((item) => progress.includes(item._id));
+    const filter = data.filter((item) => item.durationType === "weekly");
     console.log(filter);
     return filter;
   } catch (error) {
@@ -86,4 +85,5 @@ module.exports = {
   startChallanges,
   finishChallanges,
   getAllChalangesByiD,
+  getAllChalangesAll,
 };
