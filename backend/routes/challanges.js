@@ -3,13 +3,24 @@ const router = express.Router();
 const {
   finishChallanges,
   startChallanges,
-  getAllChalanges,
+  getAllChalangesAll,
+  getAllChalangesByiD,
 } = require("../service/challangesService.js");
+
+router.get("/all", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = getAllChalangesAll();
+    return res.status(200).send(result);
+  } catch (error) {
+    return res.status(400).json({ message: error.message || error });
+  }
+});
 
 router.get("/all/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const result = getAllChalanges(id);
+    const result = getAllChalangesByiD(id);
     return res.status(200).send(result);
   } catch (error) {
     return res.status(400).json({ message: error.message || error });

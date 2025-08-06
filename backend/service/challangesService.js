@@ -2,7 +2,19 @@ const User = require("../model/userModel.js");
 const Challanges = require("../model/challangesModel.js");
 const { getProgessChallanges } = require("./userService.js");
 
-const getAllChalanges = async (idUser) => {
+const getAllChalangesByiD = async (idUser) => {
+  try {
+    const data = await Challanges.find();
+    const progress = await getProgessChallanges(idUser);
+    const filter = data.filter((item) => progress.includes(item._id));
+    console.log(filter);
+    return filter;
+  } catch (error) {
+    return new Error("Failed to get challanges", error.message);
+  }
+};
+
+const getAllChalangesAll = async () => {
   try {
     const data = await Challanges.find();
     const progress = await getProgessChallanges(idUser);
@@ -73,5 +85,5 @@ const finishChallanges = async (idUser, idChallange) => {
 module.exports = {
   startChallanges,
   finishChallanges,
-  getAllChalanges,
+  getAllChalangesByiD,
 };

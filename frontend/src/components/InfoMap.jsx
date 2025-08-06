@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
-import MiniSearchBar from "../components/MiniSearchBar";
-import MapBox from "../components/MapBox";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
@@ -54,13 +50,7 @@ const InfoMap = () => {
         setDeskripsi(result.airPollution.deskripsi);
         setActivity(result.airPollution.activity);
         setDampak(result.airPollution.dampak);
-        // const plant = result.plants.map((wit) => {
-        //   return {
-        //     Nama: wit.Nama,
-        //     APTI: wit.APTI,
-        //   };
-        // });
-        // setPlantRecomendation(plant);
+        console.log(result.plants);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -85,11 +75,11 @@ const InfoMap = () => {
       {/* AQI */}
       <div
         className={`w-full h-12 flex-auto rounded-2xl p-2 mx-auto text-center mt-4 ${
-          aqi < 75
+          label === "Good"
             ? "bg-[#50CE55]"
-            : aqi < 150
+            : label === "Moderate"
             ? "bg-[#e69d3e]"
-            : aqi < 300
+            : label === "Poor"
             ? "bg-[#8d0000]"
             : "bg-[#540054]"
         }`}>
