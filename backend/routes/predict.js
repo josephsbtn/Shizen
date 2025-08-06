@@ -5,6 +5,7 @@ const { MLresult, getDiease } = require("../service/predictService.js");
 router.get("/request/:city", async (req, res) => {
   try {
     const city = req.params.city;
+    console.log("REQ CITY:", city);
     const result = await MLresult(city);
     return res.status(200).send(result);
   } catch (error) {

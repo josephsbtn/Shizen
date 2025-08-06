@@ -8,6 +8,7 @@ import MiniChallengesCard from "../components/MiniChallengeCard";
 import ProgressChallanges from "../components/ProgressChallanges";
 
 const Challange = () => {
+  const userId = localStorage.getItem("user") || "";
   const [challanges, setChallanges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentChallange, setCurrentChallange] = useState(null);
@@ -28,9 +29,11 @@ const Challange = () => {
   //ambil data challanges
   const fetchChallanges = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/challanges/all");
+      const response = await axios.get(
+        `http://localhost:8000/users/progress/${userId}`
+      );
       const filtered = response.data
-        .filter(ch => ch.durationType === "weekly")
+        .filter((ch) => ch.durationType === "weekly")
         .slice(0, 5);
       setChallanges(filtered);
     } catch (error) {
@@ -52,7 +55,7 @@ const Challange = () => {
 
   // finish challanges dan update point
   const completeChallange = async (challange) => {
-    if (!user || !user.id){
+    if (!user || !user.id) {
       return alert("Login first!");
     }
 
@@ -79,9 +82,9 @@ const Challange = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="loader"></div>
       </div>
-    )
+    );
   }
-  
+
   // loading state
   if (loading) {
     return (
@@ -89,7 +92,7 @@ const Challange = () => {
         <div className="loader"></div>
       </div>
     );
-  }  
+  }
 
   return (
     <motion.div
@@ -97,14 +100,12 @@ const Challange = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1, ease: "easeInOut" }}
-      id="home"
-    >
+      id="home">
       <motion.div
         className="w-full py-10"
         initial={{ y: -50 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      >
+        transition={{ duration: 0.5, ease: "easeInOut" }}>
         <Navbar />
       </motion.div>
 
@@ -137,7 +138,7 @@ const Challange = () => {
 
         <div className="w-full mt-10 flex justify-center items-center pt-2 mb-20 gap-4">
           <div className="flex flex-wrap justify-center items-center gap-4">
-            <ProgressChallanges 
+            <ProgressChallanges
               challange={currentChallange}
               onChallangeComplete={completeChallange}
             />

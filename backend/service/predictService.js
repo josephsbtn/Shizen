@@ -16,6 +16,7 @@ const getListCity = async (name) => {
         },
       },
     }).limit(100);
+    console.log(nearestCity);
     const filter = nearestCity.filter((city) => city.city !== mainCity.city);
     filter.push({
       city: mainCity.city,
@@ -82,7 +83,7 @@ const getRecomendPlants = async (inputData) => {
         },
       })
     ).data;
-    console.log(result);
+    // console.log(result);
     return result.plant;
   } catch (error) {
     console.log("Failed to get Input Data", error.message);
@@ -117,7 +118,7 @@ const MLresult = async (name) => {
           dampak: healthLabel.dampak,
           activity: healthLabel.activity,
         },
-        plants: plantRecomendation.slice(0, 3),
+        plant: plantRecomendation,
       };
     });
 

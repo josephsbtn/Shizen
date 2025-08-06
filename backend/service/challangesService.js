@@ -1,5 +1,12 @@
 const User = require("../model/userModel.js");
 const Challanges = require("../model/challangesModel.js");
+const { getProgessChallanges } = require("./userService.js");
+
+const getAllChalanges = async (idUser) => {
+  try {
+    const data = await Challanges.find();
+  } catch (error) {}
+};
 
 const startChallanges = async (idUser, idChallange) => {
   try {
