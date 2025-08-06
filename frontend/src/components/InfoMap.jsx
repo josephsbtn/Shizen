@@ -45,25 +45,28 @@ const InfoMap = () => {
 
   useEffect(() => {
     if (!city) return;
-
-    const fetchData = async () => {
-      setIsLoading(true);
-      const result = await getRawData(city);
-      if (result) {
+    setIsLoading(true);
+    getRawData(city)
+      .then((result) => {
         setData(result);
-        setAqi(result.healthStatus?.AQI || 0);
-        setLabel(result.healthStatus?.status || "");
-        setDeskripsi(result.healthStatus?.deskripsi || "");
-        setActivity(result.healthStatus?.aktivitas || "");
-        setDampak(result.healthStatus?.dampak || "");
-        setPlantRecomendation(result.plantRecommendation || []);
-      }
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, [city]);
-
+        setAqi(result.airPollution.aqi);
+        setLabel(result.airPollution.label);
+        setDeskripsi(result.airPollution.deskripsi);
+        setActivity(result.airPollution.activity);
+        setDampak(result.airPollution.dampak);
+        // const plant = result.plants.map((wit) => {
+        //   return {
+        //     Nama: wit.Nama,
+        //     APTI: wit.APTI,
+        //   };
+        // });
+        // setPlantRecomendation(plant);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log("Something wrong");
+      });
+  }, []);
   // Tampilkan loading spinner saat fetch
   if (isLoading) {
     return (
@@ -89,8 +92,7 @@ const InfoMap = () => {
             : aqi < 300
             ? "bg-[#8d0000]"
             : "bg-[#540054]"
-        }`}
-      >
+        }`}>
         <span className="text-white text-2xl font-normal font-montserrat leading-normal">
           AQI:
         </span>
