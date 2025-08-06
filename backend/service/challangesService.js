@@ -32,6 +32,5 @@ const startChallanges = async (idUser, idChallange) => {
 };
 
 module.exports = {
-  getProgessChallanges,
   startChallanges,
 };
