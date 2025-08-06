@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 const { dbconnect } = require("./config/database.js");
 
 const predictRoutes = require("./routes/predict.js");
@@ -11,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 dbconnect()
   .then(() => {
+    app.use("/uploads", upload);
     app.use("/challange", challangeRoutes);
     app.use("/predict", predictRoutes);
     app.use("/users", userRoutes);

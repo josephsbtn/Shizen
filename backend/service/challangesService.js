@@ -8,7 +8,10 @@ const getAllChalanges = async (idUser) => {
     const progress = await getProgessChallanges(idUser);
     const filter = data.filter((item) => progress.includes(item._id));
     console.log(filter);
-  } catch (error) {}
+    return filter;
+  } catch (error) {
+    return new Error("Failed to get challanges", error.message);
+  }
 };
 
 const startChallanges = async (idUser, idChallange) => {
