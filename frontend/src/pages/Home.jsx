@@ -37,7 +37,7 @@ const Home = () => {
         </motion.h1>
 
         <motion.p
-          className="w-[38%] text-2xl font-raleway text-center text-white font-raleway"
+          className="w-[38%] text-2xl font-raleway text-center text-white"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}>

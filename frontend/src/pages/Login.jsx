@@ -58,26 +58,24 @@ const Login = () => {
 
       if (response.status === 201) {
         if (isLogin) {
-          // Parse the response data and store user data in localStorage
+          
           let userData;
           try {
             userData = JSON.parse(response.data);
           } catch (error) {
-            // If data is just a string, create a user object
+    
             userData = {
               username: formData.username,
-              email: "", // You might want to get this from response
+              email: "", 
               image: "",
               points: 0,
             };
           }
 
           localStorage.setItem("user", JSON.stringify(userData));
-          alert("Login successful!");
-          navigate("/"); // Redirect to home
+          navigate("/"); // 
         } else {
-          alert("Registration successful! Please login.");
-          setIsLogin(true); // Switch to login form
+          setIsLogin(true); 
           setFormData({
             username: "",
             email: "",

@@ -17,9 +17,9 @@ const Challange = () => {
   // ambil data user dari local
   useEffect(() => {
     const data = localStorage.getItem("user");
-    if (data) {
+    if (data._id) {
       try {
-        setUser(JSON.parse(data));
+        setUser(JSON.parse(data._id));
       } catch (error) {
         console.error("invalid user data");
       }
@@ -30,7 +30,7 @@ const Challange = () => {
   const fetchChallanges = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/users/progress/${userId}`
+        `http://localhost:8000/challange/all`
       );
       const filtered = response.data
         .filter((ch) => ch.durationType === "weekly")
@@ -50,7 +50,6 @@ const Challange = () => {
   // start challanges
   const startChallange = (challange) => {
     setCurrentChallange(challange);
-    alert(`Starting Challange: ${challange.name}`);
   };
 
   // finish challanges dan update point
@@ -69,11 +68,9 @@ const Challange = () => {
       localStorage.setItem("user", JSON.stringify(updateUser));
       setUser(updateUser);
       setCurrentChallange(null);
-      alert(`Challange Completed: ${challange.name}`);
       window.location.reload();
     } catch (error) {
       console.error("Error completing challange:", error);
-      alert("Failed to complete challange. Please try again.");
     }
   };
 
