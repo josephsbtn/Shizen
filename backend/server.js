@@ -5,16 +5,13 @@ const { dbconnect } = require("./config/database.js");
 
 const predictRoutes = require("./routes/predict.js");
 const userRoutes = require("./routes/user.js");
-const {
-  getProgessChallanges,
-  startChallanges,
-} = require("./service/challangesService.js");
+const { getInputData } = require("./service/predictService.js");
 
 app.use(express.json());
 app.use(cors());
 dbconnect()
   .then(() => {
-    startChallanges("688600d34a1923f6c3d2732d", "6885ec664a1923f6c3d27241");
+    getInputData(-6.3111, 106.7619);
     app.use("/predict", predictRoutes);
     app.use("/users", userRoutes);
     app.listen(8000, () => {

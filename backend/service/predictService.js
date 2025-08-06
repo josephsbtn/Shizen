@@ -23,20 +23,23 @@ const getListCity = async (name) => {
         coordinates: [mainCity.lon, mainCity.lat],
       },
     });
+    console.log(filter);
     return filter;
   } catch (error) {
-    console.log("Failed to get list city", error);
-    return Error("Failed to get list city", error);
+    console.log("Failed to get list city", error.message);
+    return Error("Failed to get list city", error.message);
   }
 };
 
 const getInputData = async (lat, lon) => {
   try {
+    console.log(lat, lon);
     const [pollution, weather] = await Promise.all([
       getPollution(lat, lon),
       getWeather(lat, lon),
     ]);
-
+    console.log(pollution);
+    console.log(weather);
     return {
       CO: pollution.CO,
       NO2: pollution.NO2,
@@ -47,15 +50,15 @@ const getInputData = async (lat, lon) => {
       Humidity: weather.Humidity,
     };
   } catch (error) {
-    console.log("Failed to get Input Data", error);
-    return Error("Failed to get Input Data", error);
+    console.log("Failed to get Input Data", error.message);
+    return Error("Failed to get Input Data", error.message);
   }
 };
 
 const getHealtLabel = async (inputData) => {
   try {
     const result = (
-      await axios.get(`http://127.0.0.1:5000/predict/health`, inputData, {
+      await axios.post(`http://127.0.0.1:5000/predict/health`, inputData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -64,24 +67,24 @@ const getHealtLabel = async (inputData) => {
 
     return result.healthLabel;
   } catch (error) {
-    console.log("Failed to get Input Data", error);
-    return Error("Failed to get Health Label", error);
+    console.log("Failed to get Input Data", error.message);
+    return Error("Failed to get Health Label", error.message);
   }
 };
 
 const getRecomendPlants = async (inputData) => {
   try {
     const result = (
-      await axios.get(`http://127.0.0.1:5000/predict/plants`, inputData, {
+      await axios.post(`http://127.0.0.1:5000/predict/plants`, inputData, {
         headers: {
           "Content-Type": "application/json",
         },
       })
     ).data;
-    return result.plant;
+    return { plant: result.plant };
   } catch (error) {
-    console.log("Failed to get Input Data", error);
-    return Error("Failed to get Health Label", error);
+    console.log("Failed to get Input Data", error.message);
+    return Error("Failed to get Health Label", error.message);
   }
 };
 
@@ -91,8 +94,8 @@ const MLresult = async (name) => {
 
     const result = cities.map(async (city) => {
       console.log(city);
-      const lat = city.location.coordinates[0];
-      const lon = city.location.coordinates[1];
+      const lat = city.location.coordinates[1];
+      const lon = city.location.coordinates[0];
       const inputData = await getInputData(lat, lon);
       const healthLabel = await getHealtLabel(inputData);
       const plantRecomendation = await getRecomendPlants(inputData);
@@ -116,14 +119,41 @@ const MLresult = async (name) => {
     console.log(final);
     return final;
   } catch (error) {
-    console.log("Failed to get Input Data", error);
-    return Error("Failed to get Health Label", error);
+    console.log("Failed to get Input Data", error.message);
+    return Error("Failed to get Health Label", error.message);
   }
 };
 
 const getDiease = async (name, cough, fatigue, fever) => {
   try {
-  } catch (error) {}
+    const mainCity = await getCity(name);
+    const weather = await getWeather(mainCity.lat, mainCity.lon);
+    const cgh = cough ? 1 : 0;
+    const ftg = fatigue ? 1 : 0;
+    const fvr = fever ? 1 : 0;
+    const inputData = {
+      cough: cgh,
+      fatigue: ftg,
+      fever: fvr,
+      Temperature: weather.Temperature,
+      Humidity: weather.Humidity,
+      Wind_Speed: weather.WindSpeed,
+    };
+
+    const result = await axios.get(
+      `http://127.0.0.1:5000/predict/disease`,
+      inputData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return result.disease;
+  } catch (error) {
+    console.log("Failed to get Input Data", error.message);
+    return Error("Failed to get Health Label", error.message);
+  }
 };
 
-module.exports = { MLresult };
+module.exports = { MLresult, getDiease, getInputData };

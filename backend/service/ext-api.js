@@ -4,7 +4,7 @@ const axios = require("axios");
 const getCity = async (city) => {
   try {
     const result = (
-      await axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${KEY_OPENWEATHER}
+      await axios.get(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${KEY_OPENWEATHER}
 `)
     ).data;
     return {
@@ -21,7 +21,7 @@ const getCity = async (city) => {
 const getPollution = async (lat, lon) => {
   try {
     const result = (
-      await axios.get(`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${KEY_OPENWEATHER}
+      await axios.get(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${KEY_OPENWEATHER}
 `)
     ).data;
 
@@ -40,15 +40,16 @@ const getPollution = async (lat, lon) => {
 
 const getWeather = async (lat, lon) => {
   try {
+    console.log("lat", lat, "lon", lon);
     const result = (
-      await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${KEY_OPENWEATHER}&units=metrics
-`)
+      await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${KEY_OPENWEATHER}&units=metric`
+      )
     ).data;
-
     return {
       Temperature: result.main.temp,
       Humidity: result.main.humidity,
-      Wind_Speed: result.main.wind.speed,
+      WindSpeed: result.wind.speed,
     };
   } catch (error) {
     console.log("Failed to get weather");
