@@ -105,6 +105,40 @@ def predict_plant():
         )
     except Exception as e:
         raise e     
+    
+
+
+disease_model = joblib.load("disease_model.pkl")
+disease_scaler = joblib.load("disease_scaler.pkl")
+disease_label = joblib.load("disease_label.pkl")
+
+@app.route("/predict/disease", methods = ["POST"])
+def predict_disease():
+    try:
+        data = request.json
+        features = [
+            data["Temperature"],
+            data["Humidity"],
+            data["Wind_Speed"],
+            data["fever"],
+            data["cough"],
+            data["fatigue"]
+        ]
+        print(features)
+        x_scaled = disease_scaler.transform([features])
+        predict_class = int(disease_model.predict(x_scaled)[0])
+        predict_label = disease_label.inverse_transform([predict_class])[0]
+
+        return jsonify(
+            {
+                "disease" : predict_label
+            }
+        )
+    except Exception as e:
+        raise e
+
+
+
 
 if __name__ == ("__main__"):
     app.run(port=5000, debug=True)
