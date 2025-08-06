@@ -1,28 +1,49 @@
 import React from "react";
+import mapboxgl from "mapbox-gl";
 import { useNavigate } from "react-router-dom";
 
-const Searchbar = ({ onSearch }) => {
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+
+const SearchBar = ({ onSearch }) => {
+  // local stores
   const [searchValue, setSearchValue] = React.useState("");
   const navigate = useNavigate();
 
+  //input handler
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+
+    if (onSearch) {
+      onSearch(value);
+    }
+  };
+
   const handleSubmit = async (e) => {
+    e.preventDefault();
     if (onSearch && searchValue.trim()) {
       onSearch(searchValue.trim());
     }
 
-    navigate(`map?city=${encodeURIComponent(searchValue.trim())}`);
+    // rederict ke /map dengan query di searchbar mate
+    navigate(`/map?city=${encodeURIComponent(searchValue.trim())}`);
   };
 
   return (
-    <div className="w-full bg-white rounded-3xl h-12 mx-auto">
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Cari Kota..."
-          className="w-full h-12 rounded-3xl px-4 text-2xl text-center font-medium text-black"
-          type="text"
-        />
-      </form>
+    <div className="w-full max-w-lg border border-white rounded-xl">
+      <div className="w-[97%] m-2 bg-white mx-auto rounded-xl shadow-lg">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Cari kota..."
+            value={searchValue}
+            onChange={handleInputChange}
+            className="w-full p-4 rounded-xl text-black "
+          ></input>
+        </form>
+      </div>
     </div>
   );
 };
-export default Searchbar;
+
+export default SearchBar;

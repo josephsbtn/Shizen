@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 // import MiniSearchBar from "../components/MiniSearchBar";
 import MapBox from "../components/MapBox";
+import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
 // icons
@@ -12,10 +13,11 @@ import health from "../assets/map_health.svg";
 
 const Map = () => {
   const [searchParams] = useSearchParams();
-  const city = searchParams.get("city") || "Salatiga";
+  const city = searchParams.get("city") || "Salatiga"; // default to
 
   return (
     <div className="w-full h-full bg-[#204E51] min-h-screen">
+      {/* Animated Navbar */}
       <motion.div
         className="w-full py-10"
         initial={{ y: -50 }}
@@ -24,6 +26,7 @@ const Map = () => {
         <Navbar />
       </motion.div>
 
+      {/* Top Section: Title and Search */}
       <div className="flex justify-between items-center px-20 gap-4">
         <div className="flex items-center gap-4">
           <h1 className="text-4xl font-bold text-white">Penyebaran Polusi</h1>
@@ -88,7 +91,6 @@ const Map = () => {
           </p>
 
           {/* rekomendasi tanaman */}
-          
           {/* resiko kesehatan */}
           <div className="h-11 bg-[#50CE55] flex justify-between items-center text-white rounded-2xl p-2 mt-4">
             <span className="text-sm font-medium font-montserrat leading-normal">
