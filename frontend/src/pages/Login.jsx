@@ -11,9 +11,6 @@ const Login = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    image: "",
-    lat: null,
-    lon: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -39,9 +36,7 @@ const Login = () => {
             username: formData.username,
             email: formData.email,
             password: formData.password,
-            image: formData.image || "",
-            lat: formData.lat || 0,
-            lon: formData.lon || 0,
+            confirmPassword: "",
           };
 
       // Validate register form
@@ -52,7 +47,7 @@ const Login = () => {
       }
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/users/${endpoint}`,
+        `http://127.0.0.1:8000${endpoint}`,
         payload,
         {
           headers: {
@@ -61,14 +56,12 @@ const Login = () => {
         }
       );
 
-      const data = await response.text();
-
-      if (response.ok) {
+      if (response.status === 201) {
         if (isLogin) {
           // Parse the response data and store user data in localStorage
           let userData;
           try {
-            userData = JSON.parse(data);
+            userData = JSON.parse(response.data);
           } catch (error) {
             // If data is just a string, create a user object
             userData = {
@@ -90,13 +83,10 @@ const Login = () => {
             email: "",
             password: "",
             confirmPassword: "",
-            image: "",
-            lat: null,
-            lon: null,
           });
         }
       } else {
-        setError(data || "Something went wrong");
+        setError(response.data || "Something went wrong");
       }
     } catch (error) {
       setError("Network error. Please try again.");
@@ -205,24 +195,6 @@ const Login = () => {
                     required
                   />
                 </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Profile Image URL (optional)
-                  </label>
-                  <input
-                    type="url"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleInputChange}
-                    placeholder="https://example.com/your-profile-image.jpg"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Paste your image URL here (e.g., from Instagram, Facebook,
-                    etc.)
-                  </p>
-                </div>
               </>
             )}
 
@@ -246,9 +218,6 @@ const Login = () => {
                     email: "",
                     password: "",
                     confirmPassword: "",
-                    image: "",
-                    lat: null,
-                    lon: null,
                   });
                 }}
                 className="text-green-300 hover:text-green-200 font-bold ml-2 transition-colors">
