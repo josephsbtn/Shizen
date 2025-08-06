@@ -17,21 +17,12 @@ const Challange = () => {
   // ambil data user dari local
   useEffect(() => {
     const data = localStorage.getItem("user");
-    if (data._id) {
-      try {
-        setUser(JSON.parse(data._id));
-      } catch (error) {
-        console.error("invalid user data");
-      }
-    }
   }, []);
 
   //ambil data challanges
   const fetchChallanges = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/challange/all`
-      );
+      const response = await axios.get(`http://localhost:8000/challange/all`);
       const filtered = response.data
         .filter((ch) => ch.durationType === "weekly")
         .slice(0, 5);
