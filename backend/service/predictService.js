@@ -12,6 +12,7 @@ const getListCity = async (name) => {
             type: "Point",
             coordinates: [mainCity.lon, mainCity.lat],
           },
+          $maxDistance : 100000
         },
       },
     }).limit(5);
@@ -81,7 +82,7 @@ const getRecomendPlants = async (inputData) => {
         },
       })
     ).data;
-    console.log(result);
+    // console.log(result);
     return result.plant;
   } catch (error) {
     console.log("Failed to get Input Data", error.message);
@@ -101,6 +102,7 @@ const MLresult = async (name) => {
       const healthLabel = await getHealtLabel(inputData);
       const plantRecomendation = await getRecomendPlants(inputData);
       const AQI = await getAQI(lat, lon);
+      console.log(AQI)
 
       return {
         geometry: {
@@ -109,7 +111,7 @@ const MLresult = async (name) => {
         },
         airPollution: {
           label: healthLabel,
-          AQI: AQI,
+          aqi: AQI,
           property: inputData,
         },
         plant: plantRecomendation,

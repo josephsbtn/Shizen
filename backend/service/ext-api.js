@@ -63,6 +63,8 @@ const getAQI = async (lat, lon) => {
       await axios.get(`https://api.waqi.info/feed/geo:${lat};${lon}/?token=${KEY_AQI}
 `)
     ).data;
+    // console.log(result.data.aqi)
+    return result.data.aqi
   } catch (error) {
     console.log("Failed to get AQI");
     return Error("Failed to get AQI");

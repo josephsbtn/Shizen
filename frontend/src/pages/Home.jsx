@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/Searchbar";
 
 const Home = () => {
   //store search input Searchbar
