@@ -9,6 +9,41 @@ health_model = joblib.load("health_model.pkl")
 health_scaler = joblib.load("health_scaler.pkl")
 health_label = joblib.load("health_label.pkl")
 
+def desk_health(pred_label):
+    if pred_label == "Good":
+        return "Udara dalam kondisi sangat baik. Kadar polutan berada jauh di bawah ambang batas yang membahayakan kesehatan."
+    elif pred_label == "Hazardous":
+        return "Udara berada dalam kondisi sangat berbahaya. Polutan berada jauh di atas ambang batas aman."
+    elif pred_label == "Moderate":
+        return "Kualitas udara masih dalam batas aman, namun terdapat sedikit peningkatan kadar polutan."
+    elif pred_label == "Poor":
+        return "Udara tercemar cukup berat. Kadar beberapa polutan melebihi ambang batas aman untuk kesehatan."
+    else :
+        return "Maaf Belum Memasukan Kota" 
+    
+def dampak_health(pred_label):
+    if pred_label == "Good":
+        return "Tidak ada risiko kesehatan yang berarti untuk seluruh populasi, termasuk anak-anak, lansia, dan penderita penyakit pernapasan."
+    elif pred_label == "Moderate":
+        return "Orang dengan gangguan pernapasan, lansia, dan anak-anak mungkin mulai merasakan gejala ringan seperti batuk atau sesak."
+    elif pred_label == "Poor":
+        return "Kelompok sensitif akan merasakan efek yang lebih berat. Masyarakat umum mungkin mulai merasakan dampak ringan setelah paparan dalam waktu lama."
+    elif pred_label == "Hazardous":
+        return "Efek merugikan bisa langsung dirasakan oleh semua orang. Kelompok rentan sangat berisiko mengalami gangguan serius."
+    else :
+        return "Maaf Belum Memasukan Kota"
+    
+def aktivitas(pred_label):
+    if pred_label == "Good":
+        return "Bebas beraktivitas di luar ruangan seperti olahraga, berkendara, dan bermain."
+    elif pred_label == "Moderate":
+        return "Aktivitas luar ruangan masih diperbolehkan, namun disarankan mengurangi durasi atau intensitas bagi kelompok rentan."
+    elif pred_label == "Poor":
+        return "Hindari aktivitas fisik berat di luar ruangan. Gunakan masker dan perbanyak minum air putih."
+    elif pred_label == "Hazardous":
+        return "Hindari aktivitas luar ruangan sebisa mungkin. Tutup rapat pintu dan jendela. Gunakan air purifier atau masker khusus jika harus keluar." 
+    else : 
+        return "Maaf Belum Memasukan Kota"
 @app.route("/predict/health", methods = ["POST"])
 def predict_health():
     try:
@@ -27,10 +62,15 @@ def predict_health():
         input_scaled = health_scaler.transform([features])
         pred_class = int(health_model.predict(input_scaled)[0])
         pred_label = health_label.inverse_transform([pred_class])[0]
-
+        deskripsi_health = desk_health(pred_label)
+        dampak = dampak_health(pred_label)
+        activity = aktivitas(pred_label)
         return jsonify(
             {
-                "healthLabel" : pred_label
+                "healthLabel" : pred_label,
+                "deskripsi" : deskripsi_health,
+                "dampak": dampak,
+                "activity":activity,
             }
         )
     except Exception as e:
