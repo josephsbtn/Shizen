@@ -52,10 +52,7 @@ const userSchema = new mongoose.Schema({
   energySaving_count: {
     type: Number,
   },
-  achievment: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "achievment",
-  },
+  achievment: [{ type: mongoose.Schema.Types.ObjectId, ref: "achievment" }],
   completedChallanges: [
     {
       challange: {
