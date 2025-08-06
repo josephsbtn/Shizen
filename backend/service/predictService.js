@@ -12,10 +12,10 @@ const getListCity = async (name) => {
             type: "Point",
             coordinates: [mainCity.lon, mainCity.lat],
           },
-          $maxDistance : 100000
+          $maxDistance: 100000,
         },
       },
-    }).limit(5);
+    }).limit(100);
     const filter = nearestCity.filter((city) => city.city !== mainCity.city);
     filter.push({
       city: mainCity.city,
@@ -66,7 +66,7 @@ const getHealtLabel = async (inputData) => {
       })
     ).data;
 
-    return result.healthLabel;
+    return result;
   } catch (error) {
     console.log("Failed to get Input Data", error.message);
     return Error("Failed to get Health Label", error.message);
@@ -102,7 +102,7 @@ const MLresult = async (name) => {
       const healthLabel = await getHealtLabel(inputData);
       const plantRecomendation = await getRecomendPlants(inputData);
       const AQI = await getAQI(lat, lon);
-      console.log(AQI)
+      console.log(AQI);
 
       return {
         geometry: {
@@ -110,16 +110,25 @@ const MLresult = async (name) => {
           coordinates: [lon, lat],
         },
         airPollution: {
-          label: healthLabel,
+          label: healthLabel.healthLabel,
           aqi: AQI,
           property: inputData,
+          deskripsi: healthLabel.deskripsi,
+          dampak: healthLabel.dampak,
+          activity: healthLabel.activity,
         },
         plant: plantRecomendation,
       };
     });
 
     const final = await Promise.all(result);
-    console.log(final);
+
+    if (Array.isArray(final) && final.length) {
+      return {
+        final: final,
+        mainCity: final[final.length - 1],
+      };
+    }
     return final;
   } catch (error) {
     console.log("Failed to get Input Data", error.message);

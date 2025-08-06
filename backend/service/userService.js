@@ -64,13 +64,39 @@ const login = async (username, password) => {
     }
     return user;
   } catch (error) {
-    return Error(error);
+    return Error(error.message);
   }
 };
 
-const register = async (params) => {};
+const register = async (username, email, password) => {
+  try {
+    const [emailUse, usernameUse] = await Promise.all([
+      User.findOne({ email: email }),
+      User.findOne({ username: username }),
+    ]);
+
+    if (emailUse) {
+      return Error("Email is already used");
+    }
+
+    if (usernameUse) {
+      return Error("Username is already used");
+    }
+
+    const newUser = await User.create({
+      username: username,
+      email: email,
+      password: password,
+    });
+    return newUser;
+  } catch (error) {
+    return Error(error.message);
+  }
+};
 
 module.exports = {
   leaderboard,
   getProgessChallanges,
+  login,
+  register,
 };

@@ -28,11 +28,11 @@ const MapBox = () => {
   // Fungsi fetch data dari backend
   const getRawData = async (city) => {
     try {
-      const data = (await axios.get(
-        `http://localhost:8000/predict/request/${city}`
-      )).data;
-      console.log(data)
-      return data;
+      const data = (
+        await axios.get(`http://localhost:8000/predict/request/${city}`)
+      ).data;
+      console.log(data);
+      return data.final;
     } catch (error) {
       console.error("Error fetching current data:", error);
       return null;
@@ -44,7 +44,7 @@ const MapBox = () => {
     if (!city) return;
     setIsLoading(true);
 
-     getRawData(city)
+    getRawData(city)
       .then((data) => {
         if (Array.isArray(data) && data.length) {
           // Buat FeatureCollection
@@ -55,11 +55,11 @@ const MapBox = () => {
               geometry: item.geometry,
               properties: {
                 city: item.city,
-                aqi: item.health.AQI,
+                aqi: item.airPollution.aqi,
                 status: item.airPollution.status,
                 // Skala intensity berdasarkan range AQI 1-5
-                intensity: item.health.AQI / 300,
-                ...item.health.property,
+                intensity: item.airPollution.aqi / 300,
+                ...item.airPollution.property,
               },
             })),
           };

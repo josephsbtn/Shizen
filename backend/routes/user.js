@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   leaderboard,
   getProgessChallanges,
+  register,
 } = require("../service/userService.js");
 
 router.get("/progress/:id", async (req, res) => {
@@ -18,6 +19,26 @@ router.get("/leaderboard/:id", async (req, res) => {
     const id = req.params.id;
     const result = await leaderboard(id);
     return res.status(200).send(result);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+});
+
+router.post("/register", async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const reg = register(username, email, password);
+    res.status(201).send(reg);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const reg = login(username, password);
+    res.status(201).send(reg);
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

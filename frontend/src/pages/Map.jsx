@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import MiniSearchBar from "../components/MiniSearchBar";
@@ -13,7 +13,44 @@ import health from "../assets/map_health.svg";
 
 const Map = () => {
   const [searchParams] = useSearchParams();
-  const city = searchParams.get("city") || "Salatiga"; // default to
+  const city = searchParams.get("city") || "Salatiga";
+  const [data, setData] = useState({});
+
+  const [aqi, setAqi] = useState();
+  const [deskripsi, setDeskripsi] = useState();
+  const [label, setLabel] = useState();
+  const [activity, setActivity] = useState();
+  const [dampak, setDampak] = useState();
+  const [plantRecomendation, setPlantRecomendatin] = useState();
+
+  const getRawData = async (city) => {
+    try {
+      const response = (
+        await axios.get(`http://localhost:8000/predict/request/${city}`)
+      ).data;
+      return response.mainCity;
+    } catch (error) {
+      console.error("Error fetching current data:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    getRawData(city)
+      .then((result) => {
+        setData(result);
+        setAqi(result.airPollution.aqi);
+        setLabel(result.airPollution.label);
+        setDeskripsi(result.airPollution.deskripsi);
+        setActivity(result.airPollution.activity);
+        setDampak(result.airPollution.dampak);
+      })
+      .catch((err) => {
+        console.log("Something wrong");
+      });
+  }, []);
+
+  // default to
 
   return (
     <div className="w-full h-full bg-[#204E51] min-h-screen">
@@ -46,23 +83,22 @@ const Map = () => {
           </h2>
 
           {/* AQI */}
-          <div className="w-full h-12 flex-auto rounded-2xl p-2 mx-auto text-center mt-4 bg-[#e69d3e]">
+          <div
+            className={`w-full h-12 flex-auto rounded-2xl p-2 mx-auto text-center mt-4 bg-[#e69d3e]`}>
             <span className="text-white text-2xl font-normal font-montserrat leading-normal">
               AQI:
             </span>
             <span className="text-white text-2xl font-bold font-montserrat leading-normal">
-              75
+              {aqi}
             </span>
           </div>
 
           {/* Description */}
           <p className="text-sm text-center font-medium font-montserrat leading-normal pt-2">
-            Tergolong <span className="text-sm font-bold fon">Sedang</span>
+            Tergolong <span className="text-sm font-bold fon">{label}</span>
           </p>
           <p className="text-start text-xs font-medium font-montserrat leading-[18px] pt-2">
-            Umumnya tidak berbahaya bagi masyarakat umum, namun kelompok
-            sensitif seperti anak-anak, lansia, atau penderita penyakit
-            pernapasan sebaiknya membatasi aktivitas berat di luar ruangan.
+            {deskripsi}
           </p>
 
           {/* Activity Recommendation */}
@@ -73,7 +109,7 @@ const Map = () => {
             <img src={run} alt="" />
           </div>
           <p className="text-xs text-start font-medium font-montserrat leading-normal pt-2">
-            ini gimana jo kan sesuai tempat ya rekomendasi aktivitasnya
+            {activity}
           </p>
 
           {/* resiko kesehatan */}
@@ -84,17 +120,14 @@ const Map = () => {
             <img src={health} alt="" />
           </div>
           <p className="text-xs text-start font-medium font-montserrat leading-normal pt-2">
-            Umum: <span>Manut daerah</span>
-          </p>
-          <p className="text-xs text-start font-medium font-montserrat leading-normal pt-2">
-            Rentan: <span>Manut daerah</span>
+            {dampak}
           </p>
 
           {/* rekomendasi tanaman */}
           {/* resiko kesehatan */}
           <div className="h-11 bg-[#50CE55] flex justify-between items-center text-white rounded-2xl p-2 mt-4">
             <span className="text-sm font-medium font-montserrat leading-normal">
-              Resiko Kesehatan
+              Rekomendasi Tanaman
             </span>
             <img src={health} alt="" />
           </div>

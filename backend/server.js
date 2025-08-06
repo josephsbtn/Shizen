@@ -6,6 +6,7 @@ const { dbconnect } = require("./config/database.js");
 const predictRoutes = require("./routes/predict.js");
 const userRoutes = require("./routes/user.js");
 const challangeRoutes = require("./routes/challanges.js");
+
 app.use(express.json());
 app.use(cors());
 dbconnect()

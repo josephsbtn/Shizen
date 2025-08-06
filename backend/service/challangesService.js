@@ -3,27 +3,36 @@ const Challanges = require("../model/challangesModel.js");
 
 const startChallanges = async (idUser, idChallange) => {
   try {
-    console.log("tes");
     const user = await User.findById(idUser);
-    console.log(user);
 
     if (user.completedChallanges.length > 0) {
-      const isAlready = user.completedChallanges.find(
-        (clg) =>
-          clg.challange.toString() === idChallange && clg.status === "Progress"
-      );
+      let isAlready = false;
+      user.completedChallanges.forEach((clg) => {
+        if (
+          clg.challange.toString() === idChallange &&
+          clg.status === "Progress"
+        ) {
+          isAlready = true;
+        }
+      });
+
+      console.log("cek", isAlready);
       if (isAlready) {
         throw new Error("Challanges has already started ");
       }
     }
+    // console.log(user);
 
-    user.completedChallanges.push({
-      completedChallanges: {
-        challange: idChallange,
-        status: "Progress",
+    const update = await User.findByIdAndUpdate(idUser, {
+      $push: {
+        completedChallanges: {
+          challange: idChallange,
+          status: "Progress",
+        },
       },
     });
 
+    console.log("update", update);
     user.save();
     return user;
   } catch (error) {
@@ -31,6 +40,24 @@ const startChallanges = async (idUser, idChallange) => {
   }
 };
 
+const finishChallanges = async (idUser, idChallange) => {
+  try {
+    const user = await User.findById(idUser);
+    const challanges = user.completedChallanges;
+    challanges.forEach((clg) => {
+      if (clg.challange.toString() === idChallange) {
+        console.log("Done");
+        clg.status = "Done";
+      }
+    });
+    user.save();
+    return "Success";
+  } catch (error) {
+    return new Error("Failed to get challanges", error.message);
+  }
+};
+
 module.exports = {
   startChallanges,
+  finishChallanges,
 };
