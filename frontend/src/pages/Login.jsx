@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import axios from "axios";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,7 +13,7 @@ const Login = () => {
     confirmPassword: "",
     image: "",
     lat: null,
-    lon: null
+    lon: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +22,7 @@ const Login = () => {
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -31,8 +32,8 @@ const Login = () => {
     setError("");
 
     try {
-      const endpoint = isLogin ? "/auth/login" : "/auth/register";
-      const payload = isLogin 
+      const endpoint = isLogin ? "/users/login" : "/users/register";
+      const payload = isLogin
         ? { username: formData.username, password: formData.password }
         : {
             username: formData.username,
@@ -40,7 +41,7 @@ const Login = () => {
             password: formData.password,
             image: formData.image || "",
             lat: formData.lat || 0,
-            lon: formData.lon || 0
+            lon: formData.lon || 0,
           };
 
       // Validate register form
@@ -50,13 +51,15 @@ const Login = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await axios.post(
+        `http://127.0.0.1:8000/users/${endpoint}`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.text();
 
@@ -72,10 +75,10 @@ const Login = () => {
               username: formData.username,
               email: "", // You might want to get this from response
               image: "",
-              points: 0
+              points: 0,
             };
           }
-          
+
           localStorage.setItem("user", JSON.stringify(userData));
           alert("Login successful!");
           navigate("/"); // Redirect to home
@@ -89,7 +92,7 @@ const Login = () => {
             confirmPassword: "",
             image: "",
             lat: null,
-            lon: null
+            lon: null,
           });
         }
       } else {
@@ -104,17 +107,15 @@ const Login = () => {
   };
 
   return (
-    <div 
+    <div
       className="w-full min-h-screen bg-center bg-cover"
-      style={{ backgroundImage: "url('/BgHome.png')" }}
-    >
+      style={{ backgroundImage: "url('/BgHome.png')" }}>
       {/* Navbar */}
       <motion.div
         className="w-full py-10"
         initial={{ y: -50 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      >
+        transition={{ duration: 0.5, ease: "easeInOut" }}>
         <Navbar />
       </motion.div>
 
@@ -124,8 +125,7 @@ const Login = () => {
           className="w-full max-w-md bg-white/20 backdrop-blur-sm rounded-2xl shadow-lg p-8"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        >
+          transition={{ duration: 0.8, ease: "easeInOut" }}>
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold text-white font-montserrat">
               {isLogin ? "Login" : "Register"}
@@ -143,7 +143,9 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-white font-raleway mb-2">Username</label>
+              <label className="block text-white font-raleway mb-2">
+                Username
+              </label>
               <input
                 type="text"
                 name="username"
@@ -157,7 +159,9 @@ const Login = () => {
 
             {!isLogin && (
               <div>
-                <label className="block text-white font-raleway mb-2">Email</label>
+                <label className="block text-white font-raleway mb-2">
+                  Email
+                </label>
                 <input
                   type="email"
                   name="email"
@@ -171,7 +175,9 @@ const Login = () => {
             )}
 
             <div>
-              <label className="block text-white font-raleway mb-2">Password</label>
+              <label className="block text-white font-raleway mb-2">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -186,7 +192,9 @@ const Login = () => {
             {!isLogin && (
               <>
                 <div>
-                  <label className="block text-white font-raleway mb-2">Confirm Password</label>
+                  <label className="block text-white font-raleway mb-2">
+                    Confirm Password
+                  </label>
                   <input
                     type="password"
                     name="confirmPassword"
@@ -211,7 +219,8 @@ const Login = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Paste your image URL here (e.g., from Instagram, Facebook, etc.)
+                    Paste your image URL here (e.g., from Instagram, Facebook,
+                    etc.)
                   </p>
                 </div>
               </>
@@ -220,9 +229,8 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white font-raleway font-medium py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none"
-            >
-              {loading ? "Processing..." : (isLogin ? "Login" : "Register")}
+              className="w-full bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white font-raleway font-medium py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none">
+              {loading ? "Processing..." : isLogin ? "Login" : "Register"}
             </button>
           </form>
 
@@ -240,11 +248,10 @@ const Login = () => {
                     confirmPassword: "",
                     image: "",
                     lat: null,
-                    lon: null
+                    lon: null,
                   });
                 }}
-                className="text-green-300 hover:text-green-200 font-bold ml-2 transition-colors"
-              >
+                className="text-green-300 hover:text-green-200 font-bold ml-2 transition-colors">
                 {isLogin ? "Register here" : "Login here"}
               </button>
             </p>

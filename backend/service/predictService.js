@@ -15,7 +15,7 @@ const getListCity = async (name) => {
           $maxDistance: 100000,
         },
       },
-    }).limit(100);
+    }).limit(20);
     console.log(nearestCity);
     const filter = nearestCity.filter((city) => city.city !== mainCity.city);
     filter.push({

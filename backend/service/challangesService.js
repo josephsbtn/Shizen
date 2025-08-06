@@ -5,6 +5,9 @@ const { getProgessChallanges } = require("./userService.js");
 const getAllChalanges = async (idUser) => {
   try {
     const data = await Challanges.find();
+    const progress = await getProgessChallanges(idUser);
+    const filter = data.filter((item) => progress.includes(item._id));
+    console.log(filter);
   } catch (error) {}
 };
 
@@ -67,4 +70,5 @@ const finishChallanges = async (idUser, idChallange) => {
 module.exports = {
   startChallanges,
   finishChallanges,
+  getAllChalanges,
 };
