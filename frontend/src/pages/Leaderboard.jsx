@@ -147,10 +147,10 @@ const Leaderboard = () => {
             </div>
             <div className="flex-col justify-center pt-5">
               <p className="text-white font-medium text-2xl text-center w-[50%]">
-                {juara1.username}
+                {juara3.username}
               </p>
               <p className="text-white font-medium text-2xl text-center mx-auto w-[50%]">
-                {juara1.point}
+                {juara3.point}
               </p>
             </div>
           </div>

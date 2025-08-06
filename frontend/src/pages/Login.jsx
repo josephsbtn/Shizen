@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import axios from "axios"
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -31,16 +32,13 @@ const Login = () => {
     setError("");
 
     try {
-      const endpoint = isLogin ? "/auth/login" : "/auth/register";
+      const endpoint = isLogin ? "/login" : "/register";
       const payload = isLogin 
         ? { username: formData.username, password: formData.password }
         : {
             username: formData.username,
             email: formData.email,
             password: formData.password,
-            image: formData.image || "",
-            lat: formData.lat || 0,
-            lon: formData.lon || 0
           };
 
       // Validate register form
@@ -50,12 +48,10 @@ const Login = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
-        method: "POST",
+      const response = await axios.post(`http://localhost:8000${endpoint}`, payload,{
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
       });
 
       const data = await response.text();
