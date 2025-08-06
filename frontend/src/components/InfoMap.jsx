@@ -132,14 +132,12 @@ const InfoMap = () => {
 
       <div>
         <h1></h1>
-        {/* {plantRecomendation.map((wit) => {
-                      <div className="flex justify-between p-2">
-                        <h1 className="font-raleway font-bold text-xl">{wit.nama}</h1>
-                        <h1 className="font-raleway font-medium text-base">
-                          {wit.APTI}
-                        </h1>
-                      </div>;
-                    })} */}
+        {Array.isArray(plantRecomendation.plants).map((wit) => {
+          <div className="flex justify-between p-2">
+            <h1 className="font-raleway font-bold text-xl">{wit.nama}</h1>
+            <h1 className="font-raleway font-medium text-base">{wit.APTI}</h1>
+          </div>;
+        })}
       </div>
     </div>
   );

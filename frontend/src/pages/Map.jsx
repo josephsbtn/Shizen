@@ -16,58 +16,6 @@ import plant from "../assets/wit.svg";
 const Map = () => {
   const [searchParams] = useSearchParams();
   const city = searchParams.get("city") || "Salatiga";
-  const [data, setData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [aqi, setAqi] = useState();
-  const [deskripsi, setDeskripsi] = useState();
-  const [label, setLabel] = useState();
-  const [activity, setActivity] = useState();
-  const [dampak, setDampak] = useState();
-  const [plantRecomendation, setPlantRecomendation] = useState();
-
-  const getRawData = async (city) => {
-    try {
-      setData("");
-      setAqi("");
-      setLabel("");
-      setDeskripsi("");
-      setActivity("");
-      setDampak("");
-      setPlantRecomendation("");
-      const response = (
-        await axios.get(`http://localhost:8000/predict/request/${city}`)
-      ).data;
-      return response.mainCity;
-    } catch (error) {
-      console.error("Error fetching current data:", error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    if (!city) return;
-    setIsLoading(true);
-    getRawData(city)
-      .then((result) => {
-        setData(result);
-        setAqi(result.airPollution.aqi);
-        setLabel(result.airPollution.label);
-        setDeskripsi(result.airPollution.deskripsi);
-        setActivity(result.airPollution.activity);
-        setDampak(result.airPollution.dampak);
-        const plant = result.plants.map((wit) => {
-          return {
-            Nama: wit.Nama,
-            APTI: wit.APTI,
-          };
-        });
-        setPlantRecomendation(plant);
-      })
-      .catch((err) => {
-        console.log("Something wrong");
-      });
-  }, []);
 
   // default to
 
@@ -97,10 +45,8 @@ const Map = () => {
       {/* Map Info */}
       <div className="w-full flex justify-between items-center px-20 pt-2 gap-4">
         {/* Map desc */}
-          
-            <InfoMap />
-          
-        
+
+        <InfoMap />
 
         {/* Map Section */}
         <div className="w-4/5 h-[500px] border-white border-2 rounded-3xl shadow-lg">

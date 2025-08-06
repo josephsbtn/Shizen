@@ -9,8 +9,7 @@ const {
 
 router.get("/all", async (req, res) => {
   try {
-    const id = req.params.id;
-    const result = getAllChalangesAll();
+    const result = await getAllChalangesAll();
     return res.status(200).send(result);
   } catch (error) {
     return res.status(400).json({ message: error.message || error });
@@ -20,7 +19,7 @@ router.get("/all", async (req, res) => {
 router.get("/all/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const result = getAllChalangesByiD(id);
+    const result = await getAllChalangesByiD(id);
     return res.status(200).send(result);
   } catch (error) {
     return res.status(400).json({ message: error.message || error });
