@@ -36,5 +36,75 @@ def predict_health():
     except Exception as e:
         raise e
     
+plant_model = joblib.load("plant_model.pkl")
+plant_features = joblib.load("plant_features.pkl")
+plant_dataset = pd.read_csv("dataset_plant.csv")
+
+def recoment_plant(pollution_level,plant_db, model, columns):
+    test_df = plant_db.copy()
+    test_df["PM2_5"] = pollution_level["PM2_5"]
+    test_df["SO2"]
+    test_df["NO2"]
+    test_df = test_df[columns]
+
+    predictions = model.predict(test_df)
+
+    recomendations_plant_df = plant_db[predictions==1].copy()
+
+    if not recomendations_plant_df.empty:
+        recomendations = recomendations_plant_df[
+            ["Nama Spesies","Skor API", "Skor APTI"]
+        ].to_dict(orient = "records")
+        for rec in recomendations:
+            rec["Nama"] = rec.pop("Nama Spesies")
+            rec["API"] = rec.pop("Skor API")
+            rec["APTI"] = rec.pop("Skor APTI")
+
+        return sorted(recomendations, key = lambda x:x["API"],reverse=True)
+    return []
+
+def convert_PM2_5(PM2_5):
+    if PM2_5 <= 15.4 :
+        return 1
+    elif 15.5 <= PM2_5 <= 55.4:
+        return 2
+    else : 
+        return 3
+    
+def convert_SO2(SO2):
+    if SO2 <= 75:
+        return 1
+    elif 76 <= SO2 <= 800:
+        return 2
+    else : 
+        return 3
+
+def convert_NO2(NO2):
+    if NO2 <= 100:
+        return 1
+    elif 101 <= NO2 <= 200:
+        return 2
+    else : 
+        return 3
+
+@app.route("/predict/plant", methods = ["POST"])
+def predict_plant():
+    try:
+        data = request.get_json()
+        pollution_level = {
+            "PM2_5" : convert_PM2_5(float(data["PM2_5"])),
+            "SO2" : convert_SO2(float(data["SO2"])),
+            "NO2" : convert_NO2(float(data["NO2"])),
+        }
+        recomended_plant = recoment_plant(pollution_level, plant_dataset, plant_model, plant_features)
+
+        return jsonify(
+            {
+                "plant" : recomended_plant
+            }
+        )
+    except Exception as e:
+        raise e     
+
 if __name__ == ("__main__"):
     app.run(port=5000, debug=True)
