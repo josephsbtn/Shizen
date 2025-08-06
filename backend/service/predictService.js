@@ -141,7 +141,7 @@ const getDiease = async (name, cough, fatigue, fever) => {
       Wind_Speed: weather.WindSpeed,
     };
 
-    const result = await axios.get(
+    const result = await axios.post(
       `http://127.0.0.1:5000/predict/disease`,
       inputData,
       {
@@ -150,6 +150,7 @@ const getDiease = async (name, cough, fatigue, fever) => {
         },
       }
     );
+    console.log(result);
     return result.disease;
   } catch (error) {
     console.log("Failed to get Input Data", error.message);
