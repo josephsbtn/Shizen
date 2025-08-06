@@ -20,7 +20,7 @@ const MapBox = () => {
   const [viewState, setViewState] = useState({
     longitude: 110.49273,
     latitude: -7.33194,
-    zoom: 6,
+    zoom: 15,
   });
   const [geojson, setGeojson] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +94,7 @@ const MapBox = () => {
     maxzoom: 15,
     paint: {
       "heatmap-weight": ["get", "intensity"],
-      "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 0, 2, 15, 5],
+      "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 100, 1, 15, 6],
       "heatmap-color": [
         "interpolate",
         ["linear"],
@@ -112,7 +112,7 @@ const MapBox = () => {
         1,
         "rgba(139,0,0,1)",
       ],
-      "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 0, 2, 15, 60],
+      "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 0, 60, 15, 175],
       "heatmap-opacity": 0.9,
     },
   };
@@ -206,23 +206,7 @@ const MapBox = () => {
         </div>
       </div>
 
-      {/* Controls */}
-      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 z-10">
-        <button
-          onClick={() =>
-            setViewState((v) => ({ ...v, zoom: Math.min(v.zoom + 1, 20) }))
-          }
-          className="block mb-1 px-2 py-1 bg-blue-500 text-white rounded text-sm">
-          Zoom In
-        </button>
-        <button
-          onClick={() =>
-            setViewState((v) => ({ ...v, zoom: Math.max(v.zoom - 1, 0) }))
-          }
-          className="block px-2 py-1 bg-blue-500 text-white rounded text-sm">
-          Zoom Out
-        </button>
-      </div>
+      
     </div>
   );
 };

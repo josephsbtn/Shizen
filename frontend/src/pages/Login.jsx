@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import axios from "axios"
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -32,13 +31,16 @@ const Login = () => {
     setError("");
 
     try {
-      const endpoint = isLogin ? "/login" : "/register";
+      const endpoint = isLogin ? "/auth/login" : "/auth/register";
       const payload = isLogin 
         ? { username: formData.username, password: formData.password }
         : {
             username: formData.username,
             email: formData.email,
             password: formData.password,
+            image: formData.image || "",
+            lat: formData.lat || 0,
+            lon: formData.lon || 0
           };
 
       // Validate register form
@@ -48,10 +50,12 @@ const Login = () => {
         return;
       }
 
-      const response = await axios.post(`http://localhost:8000${endpoint}`, payload,{
+      const response = await fetch(`http://localhost:8000${endpoint}`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(payload),
       });
 
       const data = await response.text();
@@ -194,7 +198,22 @@ const Login = () => {
                   />
                 </div>
 
-               
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Profile Image URL (optional)
+                  </label>
+                  <input
+                    type="url"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleInputChange}
+                    placeholder="https://example.com/your-profile-image.jpg"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Paste your image URL here (e.g., from Instagram, Facebook, etc.)
+                  </p>
+                </div>
               </>
             )}
 
