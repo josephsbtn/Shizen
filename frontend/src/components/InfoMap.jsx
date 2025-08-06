@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
 // icons
-import wind from "../assets/wind-fill.svg";
 import run from "../assets/mdi_run.svg";
 import health from "../assets/map_health.svg";
 import plant from "../assets/wit.svg";
@@ -18,7 +18,9 @@ const InfoMap = () => {
   const [label, setLabel] = useState();
   const [activity, setActivity] = useState();
   const [dampak, setDampak] = useState();
-  const [plantRecomendation, setPlantRecomendation] = useState();
+  const [plantRecomendation1, setPlantRecomendation1] = useState();
+  const [plantRecomendation2, setPlantRecomendation2] = useState();
+  const [plantRecomendation3, setPlantRecomendation3] = useState();
 
   const getRawData = async (city) => {
     try {
@@ -28,7 +30,7 @@ const InfoMap = () => {
       setDeskripsi("");
       setActivity("");
       setDampak("");
-      setPlantRecomendation("");
+      // setPlantRecomendation("");
       const response = (
         await axios.get(`http://localhost:8000/predict/request/${city}`)
       ).data;
@@ -50,7 +52,10 @@ const InfoMap = () => {
         setDeskripsi(result.airPollution.deskripsi);
         setActivity(result.airPollution.activity);
         setDampak(result.airPollution.dampak);
-        console.log(result.plants);
+        setPlantRecomendation1(result.plant[0].Nama);
+        setPlantRecomendation2(result.plant[1].Nama);
+        setPlantRecomendation3(result.plant[2].Nama);
+
         setIsLoading(false);
       })
       .catch((err) => {
@@ -129,15 +134,16 @@ const InfoMap = () => {
         </span>
         <img src={plant} alt="" />
       </div>
-
-      <div>
-        <h1></h1>
-        {Array.isArray(plantRecomendation.plants).map((wit) => {
-          <div className="flex justify-between p-2">
-            <h1 className="font-raleway font-bold text-xl">{wit.nama}</h1>
-            <h1 className="font-raleway font-medium text-base">{wit.APTI}</h1>
-          </div>;
-        })}
+      <div className="flex justify-center items-center ">
+        <p className="text-sm text-center font-medium font-montserrat leading-normal pt-2 p-2">
+          {plantRecomendation1},
+        </p>
+        <p className="text-sm text-center font-medium font-montserrat leading-normal pt-2 p-2">
+          {plantRecomendation2},
+        </p>
+        <p className="text-sm text-center font-medium font-montserrat leading-normal pt-2 p-2">
+          {plantRecomendation3}.
+        </p>
       </div>
     </div>
   );
