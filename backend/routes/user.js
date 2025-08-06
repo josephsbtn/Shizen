@@ -4,6 +4,7 @@ const {
   leaderboard,
   getProgessChallanges,
   register,
+  login,
 } = require("../service/userService.js");
 
 router.get("/progress/:id", async (req, res) => {
@@ -37,6 +38,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log(username, password);
     const reg = login(username, password);
     res.status(201).send(reg);
   } catch (error) {
