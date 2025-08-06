@@ -198,22 +198,7 @@ const Login = () => {
                   />
                 </div>
 
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Profile Image URL (optional)
-                  </label>
-                  <input
-                    type="url"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleInputChange}
-                    placeholder="https://example.com/your-profile-image.jpg"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Paste your image URL here (e.g., from Instagram, Facebook, etc.)
-                  </p>
-                </div>
+               
               </>
             )}
 

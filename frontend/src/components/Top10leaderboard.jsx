@@ -4,33 +4,18 @@ import axios from "axios";
 
 const Top10Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // fetch
   useEffect(() => {
     const fetchTop10Leaderboard = async () => {
-      setLoading(true);
-      setError(null);
-
       try {
         const response = await axios.get(
-          "https://localhost:8000/users/:id"
+          "http://localhost:8000/users/leaderboard/:id"
         );
-        console.log("loading data: ", response.data);
-
         const data = Array.isArray(response.data)
           ? response.data
           : response.data.data || [];
-
-        const sortedData = data
-          .sort((a, b) => (b.points || 0) - (a.points || 0))
-          .slice(0, 10)
-          .map((user, index) => ({
-            ...user,
-            rank: index + 4,
-          }));
-        setLeaderboardData(sortedData);
+        setLeaderboardData(data);
       } catch (err) {
         console.error("Error fetching leaderboard data:", err);
 
@@ -79,9 +64,7 @@ const Top10Leaderboard = () => {
           },
         ];
         setLeaderboardData(mockData);
-        setError("Failed to fetch leaderboard data, using mock data instead.");
-      } finally {
-        setLoading(false);
+      
       }
     };
 
@@ -101,35 +84,10 @@ const Top10Leaderboard = () => {
     )}&background=random&size=150`;
   };
 
-  //loading
-  if (loading) {
-    return (
-      <div className="w-full space-y-4">
-        {[...Array(7)].map((_, index) => (
-          <motion.div
-            key={index}
-            className="w-full p-5 px-20 bg-gray-700 rounded-xl h-full flex items-center justify-between animate-pulse"
-          >
-            <div className="flex items-center justify-center gap-4">
-              <div className="w-8 h-8 bg-gray-500 rounded"></div>
-              <div className="w-12 h-12 bg-gray-500 rounded-full"></div>
-              <div className="w-20 h-4 bg-gray-500 rounded"></div>
-            </div>
-            <div className="w-24 h-4 bg-gray-500 rounded"></div>
-          </motion.div>
-        ))}
-      </div>
-    );
-  }
+
 
   return (
     <div className="w-full space-y-4">
-      {error && (
-        <div className="text-yellow-300 text-sm mb-4 p-2 bg-yellow-900/30 rounded">
-          {error}
-        </div>
-      )}
-
       {leaderboardData.map((user, index) => (
         <motion.div
           key={user.id || index}
@@ -150,7 +108,7 @@ const Top10Leaderboard = () => {
             <img
               src={getProfileImage(user.avatar, user.name)}
               className="w-16 h-16 bg-white rounded-full object-cover border-2 border-white shadow-lg"
-              alt={`${user.name} Profile`}
+              alt={`${user.image} Profile`}
               onError={(e) => {
                 e.target.src =
                   "https://ui-avatars.com/api/?name=Unknown&background=random&size=150";
@@ -167,7 +125,7 @@ const Top10Leaderboard = () => {
           <div className="flex items-center justify-center gap-4">
             <div className="text-right">
                 <p className="text-2xl font-bold text-white font-montserrat">
-                    {formatPoints(user.points)} Points
+                    {formatPoints(user.point)} Points
                 </p>
                 <p className="text-sm text-gray-300 font-raleway">
                     Total Score: {formatPoints(user.totalScore)}

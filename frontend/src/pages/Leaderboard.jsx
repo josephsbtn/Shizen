@@ -1,12 +1,55 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 import Navbar from "../components/Navbar";
 
 import chart from "../assets/Leaderbord.svg";
 import Top10 from "../components/Top10leaderboard";
-import Top3 from "../components/Top3leaderboard";
+
+import crown from "../assets/crown 1.svg";
 
 const Leaderboard = () => {
+  const [juara1, setJuara1] = useState({});
+  const [juara2, setJuara2] = useState({});
+  const [juara3, setJuara3] = useState({});
+
+  const [juara10, setJuara10] = useState([{}]);
+
+  const fetchTop3 = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/users/leaderboard/:id"
+      );
+      const data = response.data.topThree;
+      console.log(data);
+
+      setJuara1(data[0]);
+      console.log(juara1);
+      setJuara2(data[1]);
+      setJuara3(data[2]);
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  const fetchTop10 = async () => {
+    axios
+      .get("http://localhost:8000/users/leaderboard/:id")
+      .then((response) => {
+        setJuara10(response.data.topTen);
+        console.log(response.data.topTen);
+      })
+      .catch((error) => {
+        console.error("Error fethcing data: ", error);
+      });
+  };
+
+  useEffect(() => {
+    console.log("tes");
+    fetchTop3();
+    fetchTop10();
+  }, []);
+
   return (
     <motion.div
       className="w-full min-h-screen flex flex-col bg-center bg-[#204E51]"
@@ -31,19 +74,113 @@ const Leaderboard = () => {
       </div>
       <div className="flex-grow" />
 
-      {/* Top3 */}
-      <div>
-        <div className="flex justify-center items-center mt-10">
-          <div className="w-[90%] bg-white rounded-3xl shadow-lg p-10">
-            <Top3 />
+      {/* juarajuara */}
+      <div className="w-[90%] flex flex-col justify-between items-center mx-20 pt-40 bg-[#172829] rounded-t-[100px]">
+        {/* TOP 123 */}
+        <div className="flex">
+          {/* TOp2 */}
+          <div className="flex flex-col justify-center items-center mx-auto">
+            <div className="w-52 h-52 bg-black rounded-full items-center mx-auto justify-center border-8 border-white">
+              <img
+                src={juara2.image}
+                className="rounded-full w-full bg-cover bg-center object-cover"
+                alt=""
+              />
+              <div className="mx-auto -translate-y-5 w-12 h-12 rounded-full bg-white">
+                <h1 className="text-center font-raleway font-bold text-gray-500 p-1 text-4xl">
+                  2
+                </h1>
+              </div>
+            </div>
+            <div className="flex-col justify-center pt-5">
+              <p className="text-white font-medium text-2xl text-center w-[50%]">
+                {juara2.username}
+              </p>
+              <p className="text-white font-medium text-2xl text-center mx-auto w-[50%]">
+                {juara2.point}
+              </p>
+            </div>
+          </div>
+
+          {/* TOp1 */}
+          <div className="flex flex-col justify-center items-center mx-auto -translate-y-28">
+            <img
+              src={crown}
+              className="w-24 translate-y-8 rotate-12 translate-x-8"
+              alt=""
+            />
+            <div className="w-52 h-52 bg-black rounded-full items-center mx-auto justify-center border-8 border-white">
+              <img
+                src={juara1.image}
+                className="rounded-full w-full bg-cover bg-center object-cover"
+                alt=""
+              />
+              <div className="mx-auto -translate-y-5 w-12 h-12 rounded-full bg-white">
+                <h1 className="text-center font-raleway font-bold text-yellow-500 p-1 text-4xl">
+                  1
+                </h1>
+              </div>
+            </div>
+            <div className="flex-col justify-center pt-5">
+              <p className="text-white font-medium text-2xl text-center w-[50%]">
+                {juara1.username}
+              </p>
+              <p className="text-white font-medium text-2xl text-center mx-auto w-[50%]">
+                {juara1.point}
+              </p>
+            </div>
+          </div>
+
+          {/* TOp3 */}
+          <div className="flex flex-col justify-center items-center mx-auto">
+            <div className="w-52 h-52 bg-black rounded-full items-center mx-auto justify-center border-8 border-white">
+              <img
+                src={juara3.image}
+                className="rounded-full w-full bg-cover bg-center object-cover"
+                alt=""
+              />
+              <div className="mx-auto -translate-y-5 w-12 h-12 rounded-full bg-white">
+                <h1 className="text-center font-raleway font-bold text-yellow-800 p-1 text-4xl">
+                  3
+                </h1>
+              </div>
+            </div>
+            <div className="flex-col justify-center pt-5">
+              <p className="text-white font-medium text-2xl text-center w-[50%]">
+                {juara1.username}
+              </p>
+              <p className="text-white font-medium text-2xl text-center mx-auto w-[50%]">
+                {juara1.point}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Top 10 */}
-      <div className="flex bg-white rounded-t-3xl justify-center items-end gap-4 mb-10">
-        <div className="w-[80%] bg-white rounded-3xl shadow-lg p-10">
-          <Top10 />
+        {/* Top 10 */}
+        <div className="flex w-[90%] mx-auto items-center flex-col rounded-[100px] bg-white justify-center py-10 mt-10">
+          {juara10.map((juara10, i) => (
+            <div
+              key={i}
+              className="w-[80%] h-28 bg-white my-4 rounded-3xl shadow-lg flex justify-between items-center px-6"
+            >
+              <div className="flex gap-4 items-center">
+                <span className="text-xl font-bold text-[#204E51]">
+                  {juara10.rank}.
+                </span>
+                <img
+                  src={juara10.image}
+                  alt={juara10.username}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div>
+                  <p className="text-lg font-semibold text-[#204E51]">
+                    {juara10.username}
+                  </p>
+                  <p className="text-md text-gray-600">{juara10.point} points</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </motion.div>
