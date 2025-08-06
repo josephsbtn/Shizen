@@ -13,7 +13,6 @@ app.use(express.json());
 app.use(cors());
 dbconnect()
   .then(() => {
-    app.use("/uploads", upload);
     app.use("/challange", challangeRoutes);
     app.use("/predict", predictRoutes);
     app.use("/users", userRoutes);
