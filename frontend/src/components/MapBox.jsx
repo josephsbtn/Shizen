@@ -94,7 +94,7 @@ const MapBox = () => {
     maxzoom: 15,
     paint: {
       "heatmap-weight": ["get", "intensity"],
-      "heatmap-intensity": ["interpolate", ["linear"], ["zoom"],0, 2, 15, 5],
+      "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 0, 2, 15, 5],
       "heatmap-color": [
         "interpolate",
         ["linear"],
@@ -193,20 +193,13 @@ const MapBox = () => {
           Moderate
         </div>
         <div className="flex items-center">
-          <span className="w-2 h-2 bg-orange-400 rounded-full mr-1"></span>3
-          Unhealthy Sensitive
+          <span className="w-2 h-2 bg-red-500 rounded-full mr-1"></span>3 Poor
         </div>
         <div className="flex items-center">
-          <span className="w-2 h-2 bg-red-500 rounded-full mr-1"></span>4
-          Unhealthy
-        </div>
-        <div className="flex items-center">
-          <span className="w-2 h-2 bg-purple-600 rounded-full mr-1"></span>5
-          Very Unhealthy
+          <span className="w-2 h-2  bg-purple-600 rounded-full mr-1"></span>4
+          Hazardous
         </div>
       </div>
-
-      
     </div>
   );
 };
