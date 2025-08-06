@@ -121,4 +121,9 @@ const MLresult = async (name) => {
   }
 };
 
+const getDiease = async (name, cough, fatigue, fever) => {
+  try {
+  } catch (error) {}
+};
+
 module.exports = { MLresult };
