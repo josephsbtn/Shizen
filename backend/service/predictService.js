@@ -82,7 +82,7 @@ const getRecomendPlants = async (inputData) => {
         },
       })
     ).data;
-    // console.log(result);
+    console.log(result);
     return result.plant;
   } catch (error) {
     console.log("Failed to get Input Data", error.message);
@@ -117,7 +117,7 @@ const MLresult = async (name) => {
           dampak: healthLabel.dampak,
           activity: healthLabel.activity,
         },
-        plant: plantRecomendation,
+        plants: plantRecomendation.slice(0, 3),
       };
     });
 

@@ -52,7 +52,13 @@ const Map = () => {
         setDeskripsi(result.airPollution.deskripsi);
         setActivity(result.airPollution.activity);
         setDampak(result.airPollution.dampak);
-        setPlantRecomendation(result.plant);
+        const plant = result.plants.map((wit) => {
+          return {
+            Nama: wit.Nama,
+            APTI: wit.APTI,
+          };
+        });
+        setPlantRecomendation(plant);
       })
       .catch((err) => {
         console.log("Something wrong");
@@ -147,6 +153,18 @@ const Map = () => {
               Rekomendasi Tanaman
             </span>
             <img src={plant} alt="" />
+          </div>
+
+          <div>
+            <h1></h1>
+            {/* {plantRecomendation.map((wit) => {
+              <div className="flex justify-between p-2">
+                <h1 className="font-raleway font-bold text-xl">{wit.nama}</h1>
+                <h1 className="font-raleway font-medium text-base">
+                  {wit.APTI}
+                </h1>
+              </div>;
+            })} */}
           </div>
         </div>
 
